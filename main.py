@@ -11,6 +11,31 @@ import matplotlib.pyplot as plt
 import numpy as np
 import math
 
+class ConstructGui:
+    def __init__(self, windowName):
+        self.windowName = windowName
+        self.openImages = ImageHandler()
+    
+    def img_window(self):
+        
+        # select image
+        self.img = self.openImages.open_single_image()
+        
+        # gui window
+        cv2.namedWindow(self.windowName, cv2.WINDOW_NORMAL)
+        cv2.imshow(self.windowName, self.img)
+        
+        # threshold trackbar
+        cv2.createTrackbar("Threshold", self.windowName , 0, 255, self.update_threshold)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+        
+    def update_threshold(self, val):
+        threshold_value = cv2.getTrackbarPos("Threshold", self.windowName)
+        _, dst = cv2.threshold(self.img, threshold_value, 255, cv2.THRESH_BINARY)
+        cv2.imshow(self.windowName, dst)
+
+    
 class ImageHandler:
     def __init__(self) :
         
@@ -30,12 +55,6 @@ class ImageHandler:
         # Fix coloring of image
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         return(image)
-    
-    def threshold_calculator(self):
-        image = self.open_single_image()
-        ret, thresh = cv2.threshold(image,20,255,cv2.THRESH_BINARY)
-        return(thresh)
         
-openImages = ImageHandler()
-img = openImages.threshold_calculator()
-plt.imshow(img)
+Gui = ConstructGui("Test")
+Gui.img_window()
