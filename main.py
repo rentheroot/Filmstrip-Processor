@@ -22,19 +22,18 @@ class ConstructGui:
         self.img = self.openImages.open_single_image()
         
         # gui window
-        cv2.namedWindow(self.windowName, cv2.WINDOW_NORMAL)
+        cv2.namedWindow(self.windowName, cv2.WINDOW_GUI_NORMAL)
         cv2.imshow(self.windowName, self.img)
         
         # threshold trackbar
-        cv2.createTrackbar("Threshold", self.windowName , 0, 255, self.update_threshold)
+        cv2.createTrackbar("Threshold Min", self.windowName , 0, 255, self.update_threshold)
         cv2.waitKey(0)
         cv2.destroyAllWindows()
         
     def update_threshold(self, val):
-        threshold_value = cv2.getTrackbarPos("Threshold", self.windowName)
-        _, dst = cv2.threshold(self.img, threshold_value, 255, cv2.THRESH_BINARY)
+        threshold_min = cv2.getTrackbarPos("Threshold Min", self.windowName)
+        _, dst = cv2.threshold(self.img, threshold_min, 255, cv2.THRESH_BINARY)
         cv2.imshow(self.windowName, dst)
-
     
 class ImageHandler:
     def __init__(self) :
