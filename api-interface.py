@@ -11,9 +11,11 @@ To Run: uvicorn api-interface:app --reload
 from fastapi import FastAPI
 from pydantic import BaseModel
 import sqlite3
+from contextlib import closing
 
 # init backend db
-connection = sqlite3.connect("project.db")
+projectDb = "project.db"
+
 
 # init app
 app = FastAPI()
@@ -29,3 +31,17 @@ class Subdivision(BaseModel):
 @app.put("/api/segment-image/{image_id}")
 async def add_segmentation(image_id : int, subdivision : Subdivision):
     return {"im ID": image_id, "sub" : subdivision}
+
+@app.get("/api/init-db")
+async def check_tables():
+    with closing(sqlite3.connect(projectDb)) as connection:
+        with closing(connection.cursor()) as cursor:
+            
+            # check if table already exists
+            sql_query = "SELECT name FROM sqlite_master WHERE type='table';"
+            cursor.execute(sql_query)
+            res = cursor.fetchall()
+            if res == []:
+                cursor.execute("CREATE TABLE segments (image_id INTEGER, segment_id INTEGER, start_point BLOB, end_point BLOB)")
+            else:
+                return res
