@@ -32,6 +32,7 @@ class Subdivision(BaseModel):
 async def add_segmentation(image_id : int, subdivision : Subdivision):
     return {"im ID": image_id, "sub" : subdivision}
 
+# initiate database with correct tables
 @app.get("/api/init-db")
 async def check_tables():
     with closing(sqlite3.connect(projectDb)) as connection:
