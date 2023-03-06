@@ -18,9 +18,10 @@ app = FastAPI()
 # formatted for cv2.rectangle
 class Subdivision(BaseModel):
     id: int
-    start_point: tuple[int] = []
-    end_point: tuple[int] = []
+    start_point: tuple[int, int] = []
+    end_point: tuple[int, int] = []
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
+# add new segment data to image
+@app.put("/api/segment-image/{image_id}")
+async def add_segmentation(image_id : int, subdivision : Subdivision):
+    return {"im ID": image_id, "sub" : subdivision}
