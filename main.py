@@ -49,10 +49,10 @@ class ImageHandler:
 
     
     def open_single_image(self):
-        image = cv2.imread(self.allFiles[38])
+        image = cv2.imread(self.allFiles[39])
         
         # Fix coloring of image
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         return(image)
         
 Gui = ConstructGui("Test")
