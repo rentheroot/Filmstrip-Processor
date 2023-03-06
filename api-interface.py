@@ -16,7 +16,6 @@ from contextlib import closing
 # init backend db
 projectDb = "project.db"
 
-
 # init app
 app = FastAPI()
 
@@ -26,10 +25,15 @@ class Subdivision(BaseModel):
     id: int
     start_point: tuple[int, int] = []
     end_point: tuple[int, int] = []
+    
+# add new segment data to image
+@app.post("/api/segment-image/{image_id}")
+async def add_segmentation(image_id : int, subdivision : Subdivision):
+    return {"im ID": image_id, "sub" : subdivision}
 
 # add new segment data to image
 @app.put("/api/segment-image/{image_id}")
-async def add_segmentation(image_id : int, subdivision : Subdivision):
+async def update_segmentation(image_id : int, subdivision : Subdivision):
     return {"im ID": image_id, "sub" : subdivision}
 
 # initiate database with correct tables
@@ -44,5 +48,6 @@ async def check_tables():
             res = cursor.fetchall()
             if res == []:
                 cursor.execute("CREATE TABLE segments (image_id INTEGER, segment_id INTEGER, start_point BLOB, end_point BLOB)")
+                return({"status": "table added"})
             else:
-                return res
+                return({"status": "table already exists"})
