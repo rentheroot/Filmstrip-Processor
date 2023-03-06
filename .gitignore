@@ -1,2 +1,3 @@
 uncommon-ephemera*
 __pycache__/*
+*.db

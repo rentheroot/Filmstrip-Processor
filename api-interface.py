@@ -10,6 +10,10 @@ To Run: uvicorn api-interface:app --reload
 # imports
 from fastapi import FastAPI
 from pydantic import BaseModel
+import sqlite3
+
+# init backend db
+connection = sqlite3.connect("project.db")
 
 # init app
 app = FastAPI()
